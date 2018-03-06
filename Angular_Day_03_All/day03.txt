@@ -1,0 +1,157 @@
+我们是这样写 Angular 应用的：
+	用 Angular 扩展语法编写 HTML 模板， 
+	用组件类管理这些模板，
+	用服务添加应用逻辑， 
+	用模块打包发布组件与服务。
+
+一、管道（pipe）
+	管道是用来对数据进行筛选、过滤、格式化
+
+	Vue中过滤器：
+		<any>{{expression | filter(1,2) | filter2 }}</any>
+
+		Vue.filter('changeSex',function(arg,arg1,arg2){
+			return 处理后的结果
+		})
+
+	angular中管道：
+
+	过滤器的本质就是一个有参数有返回值的方法
+		
+		语法:
+				<any>
+				{{expression | pipe1:'12':34 | pipe2}}
+				</any>
+		
+		1、内置管道
+			
+			常见内置管道：
+				uppercase/lowercase/date/number/slice
+
+		2、自定义管道
+			创建一个自定义管道：
+				import {Pipe,PipeTransform} from '@angular/core'
+
+				@Pipe({
+					name:'testNG'
+				})
+
+				export class TestPipe implements PipeTransform {
+						//value是竖杠前表达式执行的结果
+						//args通过调用管道时，冒号后边跟的参数
+					 transfrom(value:any,...args:[]):any{
+						return ‘处理后的结果’
+					 }
+				
+				}
+			
+			调用：
+				①声明
+					到模块中先引入再声明
+				②调用
+					和内置管道的用法是一样的,同样支持传参、多重过滤
+			
+			练习：
+				创建一个过滤器，将服务器端返回的
+				性别信息0 女/1男，
+				如果过滤器指定参数为en,返回boy\girl,
+				如果指定参数为zh,转换为男、女
+
+				0 | sex('en') --》girl
+				1 | sex('en') --》boy
+				0 | sex('zh') --》女
+				1 | sex('zh') --》男
+
+二、服务 (依赖注入)
+	服务 service:服务的本质是一个类，在服务类中封装的是经常用到的数据和方法。
+
+	常见的服务：日志类服务、心跳服务、网络请求服务。。。
+
+	1、服务的创建和使用
+		创建：
+			import {Injectable} from '@angular/core'
+
+			@Injectable()
+			export class UserService {
+				constructor(){}
+
+				checkUserLogin(){return true}
+			}
+
+		使用：
+			①需要给服务指定provider
+				在组件中或者模块中指定providers:[UserService]
+			②调用
+				import {UserService} from './***'
+
+				constructor(private myService:UserService){}
+
+				this.myService.checkUserLogin()
+		
+		练习：（14:45 - 15:00）
+			心跳服务，封装两个方法，分别是开始（启动周期性定时器）和结束（结束定时器）心跳。
+
+			开始心跳之后，在终端中，每隔0.5s输出 in heart beat!
+
+			在demo12组件中放上两个按钮，分别start stop
+			(将服务的提供商指定在模块)
+
+
+
+	2、如何封装一个网络请求的服务
+	
+		①创建服务的文件
+		②在服务中封装一个方法
+			sendRequest(myUrl:string){
+				return  this.http.get(myUrl).map((response)=>
+					response.json()
+				)
+			}
+		③调用之前 首先指定providers
+		④到组件中，先引入，再实例化，再调用
+			this.myHS.sendRequest().subscribe((result)=>{
+				//result就是服务器端返回的结果！
+			})
+		
+		
+		与服务器端通信如果涉及的session，angular需要这么处理：
+			客户端
+				①发起请求 withCredentials:true
+					this.http.get(
+            myUrl,
+            {withCredentials:true}
+            )
+			服务器端：
+				①跨域header('Access-Control-Allow-Origin:http://localhost:3000');
+				②服务器允许接收凭证
+				header('Access-Control-Allow-Credentials:true');
+
+
+	服务创建和使用：
+		1、创建一个文件 test.service.ts
+		2、在文件中编写代码，装饰一个服务
+			@Injectable()
+			export class TestService{
+				showAlert(msg){
+					alert(msg);
+				}
+			}
+		3、	给模块或者组件,在providers属性对应的数组中 [TestService]
+
+		4、组件中要想使用服务中的方法
+			import {TestService} from '***'
+
+			constructor(private myService:TestService){}
+
+			this.myService.showAlert()
+
+	练习：
+		新建一个demo14_lianxi文件夹
+			demo14.component.ts
+				一个按钮，一个无序列表：点击按钮，从admin/data/product_list.php获取商品数组并将数组中每一项的标题显示在无序列表
+			storehttp.service.ts 在服务中封装一个方法sendGet,当调用方法时 向服务器端发起get请求
+			步骤：
+				①创建文件 并声明组件类，给服务提供商
+				②完善服务的功能
+				③在组件中调用服务
+

@@ -1,0 +1,138 @@
+<storeHeader></storeHeader>
+    <carousel [interval]="NextPhotoInterval" [noWrap]="noLoopSlides">
+        <slide *ngFor="let slidez of slides; let index=index" [active]="slidez.active">
+            <img [src]="slidez.image" style="margin:auto;">
+        </slide>
+    </carousel>
+
+    <!--/*楼梯1f*/-->
+<div class="floor" id="f1">
+  <div class="floor_top">
+    <img src="img/index/computer_icon.png" alt=""/>
+    首页推荐 /1F
+  </div>
+  <div class="floor_content" *ngIf="recommendedItems.length > 0">
+    <img *ngIf="recommendedItems.length == 0" src="img/loading.gif" class="loading">
+
+     <div >
+              <div class="desc">
+                <p class="name">
+                    {{recommendedItems[0].title}}</p>
+                <p class="details">
+                    {{recommendedItems[0].details}}
+                </p>
+                <p class="price">
+                    ￥{{recommendedItems[0].price}}</p>
+                <a href="${data.recommendedItems[0].href}" class="view">查看详情</a>
+              </div>
+              <img [src]="recommendedItems[0].pic">
+              </div>
+                 <div>
+              <img [src]="recommendedItems[1].pic">
+              <div class="desc">
+                <p class="name">
+                  {{recommendedItems[1].title}}
+                  </p>
+                <p class="details">{{recommendedItems[1].details}}</p>
+                <p class="price">
+                  ￥{{recommendedItems[1].price}}</p>
+                <a href="${data.recommendedItems[1].href}" class="view">查看详情</a>
+              </div>
+            </div>
+            <div>
+              <div class="desc">
+                <p class="name">{{recommendedItems[2].title}}</p>
+                <p class="price">￥{{recommendedItems[2].price}}</p>
+                <a href="${data.recommendedItems[2].href}" class="view">查看详情</a>
+              </div>
+              <img [src]="recommendedItems[2].pic">
+            </div>
+            <div class="product ">
+              <img [src]="recommendedItems[3].pic" alt=""/>
+              <h2>{{recommendedItems[3].title}}</h2>
+              <p>￥{{recommendedItems[3].price}}</p>
+              <a href="${data.recommendedItems[3].href}">查看详情</a>
+            </div>
+               <div class="product ">
+              <img [src]="recommendedItems[4].pic" alt=""/>
+              <h2>{{recommendedItems[4].title}}</h2>
+              <p>￥{{recommendedItems[4].price}}</p>
+              <a href="${data.recommendedItems[3].href}">查看详情</a>
+            </div>
+               <div class="product ">
+              <img [src]="recommendedItems[5].pic" alt=""/>
+              <h2>{{recommendedItems[5].title}}</h2>
+              <p>￥{{recommendedItems[5].price}}</p>
+              <a href="${data.recommendedItems[3].href}">查看详情</a>
+            </div>
+        
+    
+  </div>
+</div>
+
+<!--楼梯2f-->
+<div class="floor" id="f2">
+  <div class="floor_top">
+    <img src="img/index/computer_icon.png" alt=""/>
+    最新上架 /2F
+  </div>
+  <div class="floor_content">
+    <img src="img/loading.gif" class="loading">
+  </div>
+</div>
+
+<!--楼梯3f-->
+<div class="floor" id="f3">
+  <div class="floor_top">
+    <img src="img/index/computer_icon.png" alt=""/>
+    热销单品 /3F
+  </div>
+  <div class="floor_content">
+    <div class="food">
+      <div class="desc">
+        <p class="name">灵越 燃7000系列</p>
+        <p class="details">酷睿双核i5处理器|256GB SSD| 8GB内存<br/>英特尔HD显卡620含共享显卡内存</p>
+        <p class="price">￥4999.00</p>
+        <div id="one" class="view">查看详情</div>
+      </div>
+      <img src="img/index/study_computer_img1.png" alt=""/>
+    </div>
+    <div class="food">
+      <div class="desc">
+        <p class="name">颜值 框不住</p>
+        <p class="details">酷睿双核i5处理器|256GB SSD| 8GB内存<br/>英特尔HD显卡620含共享显卡内存</p>
+        <p class="price">￥6888.00</p>
+        <div id="two" class="view">查看详情</div>
+      </div>
+      <img src="img/index/study_computer_img2.png">
+    </div>
+    <div class="food">
+      <div class="desc">
+        <p class="name">戴尔XPS13 13.3英寸<br/>微边框笔记本</p>
+        <p class="price">￥4600.00</p>
+        <div id="three" class="view">查看详情</div>
+      </div>
+      <img src="img/index/study_computer_img3.png" alt=""/>
+    </div>
+    <div class="product ">
+      <img src="img/index/study_computer_img3.png" alt=""/>
+      <h2>戴尔(DELL)XPS13-9360-R1609 13.3英寸微边框笔记本电脑</h2>
+      <p>￥4600.00</p>
+      <a href="product_details.html" id="four">查看详情</a>
+    </div>
+    <div class="product ">
+      <img src="img/index/study_computer_img3.png" alt=""/>
+      <h2>戴尔(DELL)XPS13-9360-R1609 13.3英寸微边框笔记本电脑</h2>
+      <p>￥4600.00</p>
+      <a href="product_details.html" id="five">查看详情</a>
+    </div>
+    <div class="product ">
+      <img src="img/index/study_computer_img3.png" alt=""/>
+      <h2>戴尔(DELL)XPS13-9360-R1609 13.3英寸微边框笔记本电脑</h2>
+      <p>￥4600.00</p>
+      <a href="product_details.html" id="fix">查看详情</a>
+    </div>
+  </div>
+</div>
+
+<storeFooter></storeFooter>

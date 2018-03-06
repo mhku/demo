@@ -1,0 +1,182 @@
+一、常见指令
+
+指令和组件的关系：
+	组件就是一个带有模板的指令！！！
+
+1、多重分支判断
+
+	vue 
+		v-if
+		v-else-if
+		v-else
+
+	<div [ngSwitch]="answer">
+		<p *ngSwitchCase="'a'"></p>
+		<p *ngSwitchDefault></p>
+	</div>
+
+2、属性绑定
+	Vue:
+		<img v-bind:src="imgUrl"/>
+		<img :src="imgUrl"/>
+		<button :class="{myHightlight:true}"></button>
+		<h1 :style="{backgroundColor:myBG}"></h1>
+
+	Angular:
+		<img [src]="imgUrl"/>
+		<button [ngClass]="{myHightlight:true}"></button>
+		<h1 [ngStyle]="{backgroundColor:myBG}">
+		</h1>
+
+3、事件绑定
+	Vue
+		<button v-on:click="handleClick"></button>
+		<button @click="handleClick"></button>
+	Angular
+		语法：
+		<any (eventName)="eventHandler()"></any>
+		举例：
+		<button (click)="handleClick()"></button>
+
+4、双向数据绑定
+	Vue:
+		<input v-model="addr"/>
+	Angular:
+		<input [(ngModel)]="addr"/>
+
+	依赖注入：
+		将依赖的东西注入到指定的地方，让依赖可被使用
+		举例：AppModule依赖于FormsModule,只需要在AppModule的imports数组写上FormsModule名称就可以使用FormsModule所提供的东西。
+		好处：解耦，降低了耦合度
+	
+
+	Angular中如果想要监听双向数据绑定数据的变化，提供一个事件 ngModelChange
+
+	注意事项：
+	①Angular中如果要想使用双向数据绑定，就必须指定模块依赖于FormsModule
+	②使用ngModelChange事件时，通过$event去传递用户当前所输入的信息
+		（ngModelChange）="handleChange($event)"
+
+内置的指令：
+	*ngFor
+	*ngIf
+	*ngSwitchCase
+	*ngSwitchDefault
+	ngSwitch
+	[]
+	()
+	[(ngModel)]
+	{{}}
+
+5、自定义指令
+	Vue中自定义指令：
+		Vue.directive('change',{
+			bind:function(el,binding){},
+			update:function(){},
+			unbind:function(){}
+		});
+		v-change
+	Angular中指令创建和使用
+
+	5.1 创建
+		import {Directive}	from '@angular/core'
+
+		@Directive({
+			selector:'[test]'
+		})
+
+		export class TestDirective{
+		}
+
+	5.2 使用
+		①到模块中声明
+			app.module.ts
+				import {TestDirective} from '***'
+				@NgModule({
+					declarations:[TestDirective]
+				})
+		②作为标签的属性
+			<h1 test></h1>
+
+	5.3 得到调用指令的元素
+		①import {ElementRef} from '@angular/core'
+		②实例化
+			constructor(private el:ElementRef){}
+		③读取元素
+			this.el.nativeElement
+
+	5.4 指令调用时传参？？
+		①<h1 test="123"></h1>
+		②在指令类的内部
+			import {Input} from '@angular/core'
+
+			@Input() test="";
+
+			this.test
+
+	补充：使用生命周期的处理函数？
+		①引入
+			import {OnDestroy} from '@angular/core'
+		②在定义类的时候 实现接口类
+			export class Test implements OnDestroy{
+				ngOnDestroy(){}
+			}
+			
+
+二、组件之间通信
+	Vue中组件通信的方式？
+		①props down
+			步骤1：发送
+				<son myName="zhangsan"></son>
+			步骤2：接收
+				Vue.component('son',{
+					props:['myName']
+				})
+		②events up（子-》父）
+			步骤1: 事件的绑定
+				methods:{
+					rcvMsg:function(msg){}
+				}
+				<son @customEvent="rcvMsg"></son>
+			步骤2：事件的触发（儿子）
+				this.$emit('customEvent',123);
+		③$refs $parent
+		④bus
+	Angular中组件通信？
+		1、props down
+			步骤1：发送
+			<son uName="zhangsan"></son>
+			步骤2：接收
+				import {Input} from '@angular/core'
+				@Input() uName="";
+				this.uName
+		2、events up
+			步骤1：事件和处理函数的绑定
+				定义一个方法
+					rcvMsg(msg){}
+				<son (toFatherEvent)="rcvMsg($event)">
+				</son>
+			步骤2：触发事件
+				子组件触发
+					import {Output,EventEmitter} from '@angular/core'
+
+					@Output() toFatherEvent = new EventEmiiter();
+
+					this.toFatherEvent.emit('123');
+
+	综合练习：(16:25 - 16:40)
+			user:用户名 输入框 按钮
+			chatroom：无序列表+ user +user
+			①demo08_lianxi
+				创建两个文件 
+				user.component.ts
+				chatroom.component.ts
+			②在AppComponent调用chatroom
+			③实现父与子的通信
+			④实现子与父的通信
+
+	每日一练：
+		demo10_lianxi/demo10.component.ts
+
+		实现一个组件类，该组件渲染一个h1的标签
+		在组件创建完之后，启动定时器 来修改h1的透明度(0~1 0~1...);在组件销毁时，结束定时器

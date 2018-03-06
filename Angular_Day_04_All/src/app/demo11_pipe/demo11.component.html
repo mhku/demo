@@ -1,0 +1,27 @@
+
+<h1> 这是一个和管道相关的demo </h1>
+
+<!-- uppercase/lowercase -->
+<p>{{stuName | uppercase}}</p>
+<p>
+    {{stuName | uppercase | lowercase }}
+</p>
+
+<!-- date -->
+<p>{{nowDate}}</p>
+<p>{{nowDate | date}}</p>
+<!--需要在调用过滤器时指定参数-->
+<p>{{nowDate | date:'MM-dd'}}</p>
+
+<!-- number:'整数位保留最小位数.小数位保留最小位数-小数点保留最多位数' -->
+<p>{{totalPrice}}</p>
+<p>{{totalPrice | number:'4.2-4'}}</p>
+
+<!-- slice:start:end裁剪数组或者字符串，并返回裁剪后的目标子集-->
+<p>{{stuName | slice:4}}</p>
+<p>{{stuName | slice:4:7}}</p>
+
+<!--调用自定义的管道-->
+<p>{{stuName | testNG:0}}</p>
+
+<h2>{{0 | sex:'zh'}}</h2>

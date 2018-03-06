@@ -1,0 +1,37 @@
+-----------------vue-------------
+
+1、指定template直接返回多个标签
+Component template should contain exactly one root element.
+
+解决方案：指定一个容器，将需要返回的多个标签放在这个容器中 div/form/a...
+
+2、读取了一个变量的属性但是这个变量是undefined
+[Vue warn]: Error in render function: "TypeError: Cannot read property 'isUserLogin' of undefined"
+
+多数情况都是因为作用域问题
+Cannot read property '***' of undefined
+
+3、死循环 
+[Vue warn]: Error in nextTick: "RangeError: Maximum call stack size exceeded"
+
+解决方案：加上条件的判断，避免出现死循环
+
+
+----------------------ng---------------
+1、模板解析失败
+Template parse errors:
+'demo01' is not a known element:
+1. If 'demo01' is an Angular component, then verify that it is part of this module.
+2. If 'demo01' is a Web Component then add "CUSTOM_ELEMENTS_SCHEMA" to the '@NgModule.schemas' of this component to suppress this message. ("<h1>Hello {{name}}</h1>
+  [ERROR ->]<demo01></demo01>
+
+解决方案：
+	是以模块为基本单位，所创建的组件到要指定属于哪个模块
+
+
+
+
+
+
+
+

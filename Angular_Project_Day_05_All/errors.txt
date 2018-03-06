@@ -1,0 +1,69 @@
+-----------------vue-------------
+
+1、指定template直接返回多个标签
+Component template should contain exactly one root element.
+
+解决方案：指定一个容器，将需要返回的多个标签放在这个容器中 div/form/a...
+
+2、读取了一个变量的属性但是这个变量是undefined
+[Vue warn]: Error in render function: "TypeError: Cannot read property 'isUserLogin' of undefined"
+
+多数情况都是因为作用域问题
+Cannot read property '***' of undefined
+
+3、死循环 
+[Vue warn]: Error in nextTick: "RangeError: Maximum call stack size exceeded"
+
+解决方案：加上条件的判断，避免出现死循环
+
+
+----------------------ng---------------
+1、模板解析失败
+Template parse errors:
+'demo01' is not a known element:
+1. If 'demo01' is an Angular component, then verify that it is part of this module.
+2. If 'demo01' is a Web Component then add "CUSTOM_ELEMENTS_SCHEMA" to the '@NgModule.schemas' of this component to suppress this message. ("<h1>Hello {{name}}</h1>
+  [ERROR ->]<demo01></demo01>
+
+解决方案：
+	是以模块为基本单位，所创建的组件到要指定属于哪个模块
+
+2、ZoneAwareError
+
+点开，查看message
+
+3、Can't have multiple template bindings on one element.
+
+不能在同一个元素上边 调用多个结构性指令
+ng-container
+
+4、No provider for UserService!
+	DI error !
+	Dependency Injection 依赖注入
+
+有可能是因为没有给服务指定提供商
+解决方案：
+	①到模块或者组件中 指定providers属性！！
+	②在引入服务去指定Providers，引入服务的路径写错
+
+
+5、No 'Access-Control-Allow-Origin' header is present on the requested resource. Origin 'http://localhost:3000' is therefore not allowed access
+
+header('Access-Control-Allow-Origin:*');
+
+6、Unexpected value 'undefined' imported by the module 'AppModule
+
+在AppModule引入其他模块，模块不存在！
+
+7、没有给某个组件  去指定 模板内容
+(SystemJS) No template specified for component LoginComponent
+
+8、一个selector的名称用了很多次
+More than one component matched on this element.
+Make sure that only one component's selector can match a given element.
+
+解决方案：保证每一个组件的selector名字都是唯一的
+
+
+
+

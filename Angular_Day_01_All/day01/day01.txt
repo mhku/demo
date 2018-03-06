@@ -1,0 +1,180 @@
+总结：
+	1、需求分析
+		目标：学子商城的后台管理界面
+		需求：登录、主页面 --》SPA
+
+	2、概要设计
+		整个系统（Login.vue Main.vue Charts.vue ProductList.vue UserList.vue）有5个组件构成
+
+	3、完成项目
+		3.1 准备
+				①将项目中要用到的样式类文件、js文件、图片拷贝项目src/assets/css、js、img文件夹中
+				②在src/main.js中，通过import让资源文件可用
+				import './assets/css/bootstrap.css'
+				③支持vue-resource
+				import VueResource from 'vue-resource';
+				Vue.use(VueResource);
+		3.2 路由模块
+			组件的创建
+			在router/index.js 完成路由词典的配置
+			（建立起url和组件之间的映射关系）
+		3.3 login
+			v-model
+			@click 向服务器端发请求
+			(注意事项：
+				f12->network->查看信息
+				① url
+				②	arg（个数和类型）
+				③	response
+			)
+			this.$router.push('/main')
+		3.4 main
+			①router-view
+			②通过data定义变量
+			③在mounted去操作元素
+		3.5 charts
+			①折线图的绘制
+				 this.plot = $.plot()//指定将什么样的数据，按照什么方式、渲染到哪个容器
+
+				 setInterval(()=>{
+					this.plot.setData();//指定新的数据
+					this.plot.draw();//绘制
+				 },500)
+			②destroy
+				清理工作：关掉定时器、数组集合情况。。。
+		3.6 productList
+			①通过created去初始化变量
+			②属性 watch
+			③动态样式绑定
+				:class="{active:pageNo == tmp}"
+
+一、Angular概述
+
+基于命令行的开发方式？
+	①hot reload
+	②编译工作
+	③集成了webpack打包工具
+	。。。。
+
+
+angular.cn 中文
+angular.io 正式官网
+angular.cn/guide/styleguide 风格指南
+
+1、what？
+	angular是一个Google推出的js框架，是以模块为基本单位，模块又可以包含组件、指令、过滤器。。
+
+	1.1 版本问题
+		angular angular2.0以后所有的版本统称为angular
+		(当前学习ng4.0)
+
+		angular.js angular1.* 统称为angular.js
+		（http://www.runoob.com/angularjs/angularjs-tutorial.html）
+
+	1.2 版本之间的区别
+		①新版本是有组件的概念的
+		②老版本是$scope和controller为主
+		③angular引入了rxjs
+		④angular采用ts（typescript是es6的超集，是由微软和谷歌） ts是一种强类型检查机制的语言
+		⑤angular可读性、提高了代码的复用率、维护成本变低。。。
+
+2、where
+		可以使用支持angular的Ionic框架来实现移动端的开发，直接使用angular来实现pc端的开发
+
+		实现操作比较频繁的SPA
+
+3、why
+	①遵循w3c所推出的webComponent标准（组件化）
+	②代码具有更好的可读性和可维护性、
+	③引入了更多的高效率的工具 ，比如rxjs\immutable.js。。。， 让代码的编译、部署更简单
+	④ts --》 健壮
+
+4、how
+	angular的开发整体框架，是有8大组成部分构成
+
+	搭建环境的方式：
+	方式1：
+		①下载quickstart-master.zip压缩包
+		https://github.com/angular/quickstart download
+		或者 直接拷贝老师提供的压缩包
+		②解压缩 压缩包，进入对应的目录中
+		执行npm install 安装项目所需要用到的依赖
+		③npm start 启动开发服务器
+
+	方式2：
+		Angular CLI是一个命令行界面工具，它可以创建项目、添加文件以及执行一大堆开发任务，比如测试、打包和发布。
+		//安装基于angular的命令工具
+		npm install -g @angular/cli
+		//创建一个有着ng模板的项目
+		ng new my-app
+		//进入当前目录下的my-app
+		cd my-app
+		//启动开发服务器
+		ng serve --open
+
+
+
+二、Angular模板项目的启动流程
+	index.html
+
+	main.js (main.ts)-->启动一个模块 AppModule
+
+	app/app.module.ts ---> 启动一个组件 app/app.component.ts
+
+	Hello Angular
+
+三、完成组件的创建和使用
+
+	1、创建组件和使用组件
+		①创建文件 app/test/test.component.ts
+		②将类装饰成一个组件类
+			import {Component} from '@angular/core'
+	    
+			@Component({
+				selector:'test',
+				template:`<h1>it is a test</h1>`
+			})
+
+			export class Demo01Component{
+			}
+		③使用组件
+			①到模块中声明
+				app.module.ts中，
+				import {TestComponent} from './test/test.component'
+
+				@NgModule({
+					declarations:[TestComponent]
+				})
+			②<test></test>
+
+		练习：（16:50 - 17:00）
+			demo02/demo02.component.ts
+			组件中渲染一个无序列表（5个列表）
+
+			将组件渲染AppComponent
+			
+四、Angular中常见的指令
+
+	1、循环指令
+	Vue :  <any v-for="tmp in list"></any>
+
+	Angular: 
+			语法：
+	   <any *ngFor="let tmp of list"></any>
+	   <any *ngFor="let tmp of list;let myIndex=index"></any>
+
+	2、选择指令
+	Vue: <any v-if="表达式"></any>
+	angular:
+			<any *ngIf="表达式"></any>
+
+	每日一练：
+		demo04/demo04.component.ts
+
+		创建一个组件类，在该组件类中，初始化一个学生对象(age/sex/score)数组(5条数据)
+
+		渲染在table中，只显示成绩在80分以上的数据
+
+
+
+

@@ -1,0 +1,32 @@
+
+<h1>It is a test</h1>
+
+<!--多重分支判断指令-->
+<div [ngSwitch]="answer">
+    <p *ngSwitchCase="'a'">A</p>
+    <p *ngSwitchCase="'b'">B</p>
+    <p *ngSwitchCase="'c'">C</p>
+    <p *ngSwitchCase="'d'">D</p>
+    <p *ngSwitchDefault>
+        请输入正确的选项
+    </p>
+</div>
+
+<!--属性绑定-->
+<img 
+src="../../img/1.jpg" alt="">
+
+<img [src]="'../../img/'+imgName" alt="">
+
+<!--事件绑定-->
+<button (click)='handleClick()'>
+    clickMe
+</button>
+
+<!--双向数据绑定-->
+<input 
+type="text" 
+[(ngModel)]="uName"
+(ngModelChange)="handleModelChange($event)"
+/>
+

@@ -1,0 +1,237 @@
+Angular中开发模式：
+	我们是这样写 Angular 应用的：
+	用 Angular 扩展语法编写 HTML 模板， 
+	用组件类管理这些模板，
+	用服务添加应用逻辑， 
+	用模块打包发布组件与服务。
+
+	然后，我们通过引导根模块来启动该应用。
+	Angular 在浏览器中接管、展现应用的内容，并根据我们提供的操作指令响应用户的交互。
+
+在Angular开发时，八大组成部分：
+	1、模块
+	2、组件
+	3、模板 自带的html标签+指令、绑定相关的ng的语法
+	4、元数据 告诉 Angular 如何处理一个类。
+	5、数据绑定
+		{{}} () [] [(ngModel)]
+	6、指令 
+			三大类：组件、结构型、属性型
+	7、服务
+		封装一些数据和方法
+	8、依赖注入
+		就是将依赖的服务、模块注入到指定组件、模块中取使用，提供了一种新的实例化的方式（解耦）
+
+
+一、路由模块
+
+路由模块：建立起url和页面之间的映射关系
+1、实现SPA的基本步骤
+	Vue：
+	实现一个SPA基本思路：
+	①指定一个容器
+		<router-view></router-view>
+	②创建代码片段
+		创建组件
+		var Login = Vue.component('login-component',{
+			template:`<h1>登录页面</h1>`
+		})
+	③配置路由词典
+		new Vue({
+			router:new VueRouter({
+				routes:[
+					{path:'/myLogin',component:Login}
+				]
+			})
+		})
+	④测试
+		测试路由词典中 路由地址能否按照需求 正确加载所需要用到的页面
+
+	Angular：
+	①指定容器
+		<router-outlet></router-outlet>
+	②创建组件 （声明）
+		@Component({}) export class **
+	③配置路由词典
+		//a-module-routing
+		import {Routes,RouterModule} from '@angular/router'
+		import {LoginComponent} from './demo15_spa/login.component'
+
+		const routes:Routes = [
+			{path:'',component:LoginComponent}
+			.....
+		]
+
+		@NgModule({
+			import:[RouterModule.forRoot(routes)],
+			exports:[RouterModule]
+		})
+
+		export class AppRoutingModule{}
+
+		找到跟模块：
+			import {AppRoutingModule} from './app.router'
+
+			@NgModule({
+				imports:[AppRoutingModule]
+			})
+	④测试
+
+2、在Angular实现组件间的导航的方式
+	Vue写法：
+			①可以直接修改地址栏（内部测试）
+			②可以通过js
+			 this.$router.push('目的地的路由地址')
+			③routerLink
+			 <router-link to="目的地的路由地址"></router-link>
+	Angular：
+	①直接修改地址栏
+	②js	
+		import {Router} from '@angular/router'
+		constructor(private myRouter:Router){}
+		this.myRouter.navigateByUrl('url');
+	③ <a routerLink="地址"></a>
+
+	练习：
+		demo16_lianxi文件夹
+		路由地址为空访问person！
+		person  在个人中心页面 放上一个routerLink 跳转到Main页面
+		main  在main页面中，放上一个按钮（查看个人信息），点击跳转到person
+
+	补充：实现前进和后退
+		import {Location} from '@angular/common'
+
+		constructor(private myLocation:Location){}
+
+		this.myLocation.back();				this.myLocation.forward();
+
+3、参数的传递
+
+	Angular:
+		3.1 发送
+			this.myRouter.navigateByUrl('myOC/123');
+
+		3.2 接收
+			① 配置接收方的路由地址
+				{path:'myOC'} ==> {path:'myOC/:price'}
+			② 接收参数
+					import {ActivatedRoute} from '@angular/router'
+
+					constructor(private myAR:ActivatedRoute){}
+
+					this.myAR.params.subscribe((result)=>{
+						//result.price
+					})
+		
+		在Angular中 实现数据传输的方式：
+			①组件间通信
+			②跳转时指定参数
+			③与远程服务器端通信
+
+4、路由嵌套
+		可以在SPA中某个组件中，根据url嵌套其它的组件
+		Vue中实现方式：
+			①在准备嵌套其它组件的，指定一个容器 <router-view></router-view>
+			②配置路由词典
+				{
+					path:'',
+					component:MailComponent,
+					children:[
+						{path:'inbox',component:***}
+					]
+				}
+		
+		Angular中实现方式：
+			①指定容器
+				router-outlet
+			②配置子路由
+				{
+					path:'mail',
+					children:[
+						...
+					]
+				}
+
+			总结：在Angular中实现一个支持路由嵌套的SPA，导航到对应的子路由对应的页面时，必须在携带父组件的地址
+				localhost:3000/mail/outbox
+				localhost:3000/mail/inbox
+
+			demo18_embed
+				mylogin.component.ts  MyLoginComponent
+				mail.component.ts MailComponent
+				inbox.component.ts InboxComponent
+				outbox.component.ts OutboxComponent
+			①完成组件的创建和声明
+
+			②路由模块
+
+5、路由守卫
+	路由守卫 RouteGuard，控制是否能够访问某一个url中所对应的组件！
+		鉴权的组件
+		用户登录的页面
+		。。。
+	
+	如何使用路由守卫：
+		①创建一个服务
+			import {Injecatable} from '@angular/core'
+			import {CanActivate} from '@angular/router'
+
+			@Injectable()
+			export class MailGuard implments CanActivate{
+			
+				canActivate(){
+					return true/false
+				}
+			}
+		②给服务指定提供商
+			 providers:[MailGuard]
+		③给路由词典中想要保护的路由指定canActivate
+				{
+					path:'mail',
+					canActivate:[MailGuard]
+				}
+
+		Vue中如果也想实现路由守卫：
+			const router = new VueRouter({ ... })
+
+			router.beforeEach((to, from, next) => {
+				// ...
+			})
+
+			https://router.vuejs.org/zh-cn/advanced/navigation-guards.html
+
+
+
+综合练习:(4:30 - 4:45)
+		demo19_lianxi
+		通过angular来实现一个SPA，这个SPA中有3个页面：
+		默认访问check组件！！！
+		check.component.ts CheckComponent
+		商品的查看页面 btn 点击跳转pay（同时将价格 100发送）
+		pay.component.ts PayComponent
+		商品的支付页面 接收参数 显示在h1 ，routerLink点击时 跳转到send
+		send.component.ts SendComponent
+		商品的发货页面 btn 点击跳转到Check
+		①SPA
+		②跳转
+		③传参
+
+补充：调用第三方的组件--轮播图组件
+
+
+每日一练：
+路由嵌套
+	创建两个组件，购物车，订单确认
+	在订单确认的组件中 能够嵌套首次确认、再次确认组
+	件
+
+	mycart.component.ts   
+	MyCartComponent
+
+	myorderconfirm.component.ts  MyOrderConfirmComponent
+
+
+	配置路由词典
+	找到OrderConfirm 指定容器 router-outlet
+	创建要用到的组件 firstConfirm\secondConfirm
+	配置上述两个组件的路由地址

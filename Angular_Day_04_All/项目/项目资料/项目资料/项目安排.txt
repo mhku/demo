@@ -1,0 +1,76 @@
+一、准备工作
+项目构成：
+1、 准备要用到的文件夹
+在src/app的目录下创建以下文件夹：
+	utility: header（页头）/footer（页尾）/notFound（404）/service（网络请求服务）/carsousel（轮播组件）
+	login 登录页面
+	register 注册页面
+	index 首页面
+	list 商品列表
+	detail 商品详情
+	cart 购物车
+	orderConfirm 订单确认
+	userCenter 用户中心
+
+2、准备资源文件
+在src目录下创建img和assets目录
+将项目中所有图片放到img目录下
+将样式类文件都拷贝到assets目录的css目录
+将fonts目录拷贝到assets目录下
+
+
+二、在各个文件夹中创建需要用到的组件、配置路由、模块的引入
+1、完成的组件和声明
+组件的selector设置为：
+storeHeader、storeFooter、storeIndex、storeLogin、storeRegister、storeList、storeDetail、storeCart、storeOrderConfirm、storeUserCenter、notFound
+
+组件类设置为：HeaderComponent、FooterComponent、IndexComponent、LoginComponent、RegisterComponent、ListComponent、DetailComponent、CartComponent、OrderConfirmComponent、UserCenterComponent、NotFoundComponent
+
+到app.module.ts中进行组件的声明
+
+
+2、配置路由
+app目录下，创建app.router.ts,自定义路由模块类，设置导出的类名为AppRoutingModule,
+
+路由地址设置为：login、register、index、list、detail、cart、orderConfirm、userCenter、
+
+并在路由模块中完成所有的组件的路由地址的配置，同时设置路由地址为空时，加载IndexComponent；异常情况跳转到NotFoundComponent
+
+3、完成项目中需要用到的模块的引入
+比如：FormsModule、AppRoutingModule、HttpModule等
+
+
+
+三、实现notFound对应的组件
+
+四、实现index(在实现index的时候需要实现header/footer)
+
+五、实现list
+
+六、实现cart
+
+七、实现orderConfirm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
